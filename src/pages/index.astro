@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import StoreCard from '../components/StoreCard.astro';
 import SearchBar from '../components/SearchBar.astro';
+import LocationButton from '../components/LocationButton.astro';
 import storesData from '../data/stores.json';
 
 // Get a sample of stores for the homepage
@@ -156,6 +157,11 @@ const oldStores = [
         
         <!-- Search Section -->
         <SearchBar />
+        
+        <!-- Location Button -->
+        <div class="flex justify-center mt-6">
+          <LocationButton />
+        </div>
       </div>
       
       <!-- Decorative Elements -->

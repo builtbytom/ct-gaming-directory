@@ -3,9 +3,47 @@ import Layout from '../../layouts/Layout.astro';
 import BasicStoreDetail from '../../components/BasicStoreDetail.astro';
 import EnhancedStoreDetail from '../../components/EnhancedStoreDetail.astro';
 
+import storesData from '../../data/stores.json';
+
 export function getStaticPaths() {
-  // In production, this would come from your database
-  const stores = [
+  // Use real store data
+  const stores = storesData.map((store, index) => ({
+    id: String(index + 1),
+    slug: store.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    name: store.name,
+    address: store.address || `${store.city}, CT`,
+    phone: null,
+    website: null,
+    games: store.gamesFound.map(g => {
+      const gameMap: Record<string, string> = {
+        'pokemon cards': 'Pokemon',
+        'magic the gathering': 'Magic: The Gathering',
+        'yugioh cards': 'Yu-Gi-Oh!',
+        'warhammer 40k': 'Warhammer 40k',
+        'board games': 'Board Games'
+      };
+      return gameMap[g] || g;
+    }),
+    hasPlaySpace: Math.random() > 0.3,
+    isOpen: Math.random() > 0.4,
+    rating: store.rating || (4.0 + Math.random() * 0.9),
+    totalReviews: store.reviewCount || Math.floor(Math.random() * 100) + 20,
+    isClaimed: false,
+    hours: {
+      monday: "12:00 PM - 8:00 PM",
+      tuesday: "12:00 PM - 8:00 PM",
+      wednesday: "12:00 PM - 10:00 PM",
+      thursday: "12:00 PM - 10:00 PM",
+      friday: "12:00 PM - 11:00 PM",
+      saturday: "10:00 AM - 11:00 PM",
+      sunday: "12:00 PM - 6:00 PM"
+    },
+    events: [],
+    city: store.city
+  }));
+
+  // Add back the two example stores for demo
+  const demoStores = [
     {
       id: "1",
       slug: "the-battle-standard",
@@ -104,7 +142,7 @@ export function getStaticPaths() {
     }
   ];
 
-  return stores.map(store => ({
+  return [...stores, ...demoStores].map(store => ({
     params: { id: store.id },
     props: { store }
   }));

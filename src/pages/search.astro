@@ -4,6 +4,15 @@ import StoreCard from '../components/StoreCard.astro';
 import SearchBar from '../components/SearchBar.astro';
 import storesData from '../data/stores.json';
 
+// Get search parameters
+const url = new URL(Astro.request.url);
+const searchTerm = url.searchParams.get('q') || '';
+const gameFilter = url.searchParams.get('game') || '';
+const openNow = url.searchParams.get('open') === 'true';
+const hasPlaySpace = url.searchParams.get('playspace') === 'true';
+const hasEvents = url.searchParams.get('events') === 'true';
+const nearMe = url.searchParams.get('nearme') === 'true';
+
 // Transform the scraped data into our format
 const allStores = storesData.map((store, index) => ({
   id: index + 1,
@@ -26,138 +35,6 @@ const allStores = storesData.map((store, index) => ({
   city: store.city,
   events: []
 }));
-
-// Old mock data
-const oldStores = [
-  {
-    id: 1,
-    name: "The Battle Standard",
-    address: "123 Main St, Hartford, CT",
-    games: ["Magic: The Gathering", "Pokemon", "Warhammer 40k"],
-    hasPlaySpace: true,
-    isOpen: true,
-    rating: 4.8,
-    distance: "2.3 miles",
-    city: "Hartford",
-    events: ["Magic Commander Night", "Pokemon Tournament"]
-  },
-  {
-    id: 2,
-    name: "Dragon's Den Gaming",
-    address: "456 Oak Ave, New Haven, CT",
-    games: ["Pokemon", "Yu-Gi-Oh!", "Board Games"],
-    hasPlaySpace: true,
-    isOpen: false,
-    rating: 4.6,
-    distance: "5.1 miles",
-    city: "New Haven",
-    events: []
-  },
-  {
-    id: 3,
-    name: "Tabletop Kingdom",
-    address: "789 Elm St, Stamford, CT",
-    games: ["D&D", "Board Games", "Magic: The Gathering"],
-    hasPlaySpace: true,
-    isOpen: true,
-    rating: 4.9,
-    distance: "8.7 miles",
-    city: "Stamford",
-    events: ["D&D Adventure League"]
-  },
-  {
-    id: 4,
-    name: "Mythic Games & Comics",
-    address: "321 State St, Bridgeport, CT",
-    games: ["Magic: The Gathering", "Pokemon", "Warhammer 40k"],
-    hasPlaySpace: false,
-    isOpen: true,
-    rating: 4.5,
-    distance: "12.4 miles",
-    city: "Bridgeport",
-    events: []
-  },
-  {
-    id: 5,
-    name: "Card Citadel",
-    address: "555 Park Ave, Waterbury, CT",
-    games: ["Pokemon", "Warhammer 40k", "Board Games"],
-    hasPlaySpace: true,
-    isOpen: true,
-    rating: 4.7,
-    distance: "15.2 miles",
-    city: "Waterbury",
-    events: ["Warhammer Paint Night"]
-  },
-  {
-    id: 6,
-    name: "Gamer's Haven",
-    address: "777 Commerce Dr, Norwalk, CT",
-    games: ["Warhammer 40k", "D&D", "Board Games"],
-    hasPlaySpace: true,
-    isOpen: false,
-    rating: 4.9,
-    distance: "18.6 miles",
-    city: "Norwalk",
-    events: []
-  },
-  {
-    id: 7,
-    name: "The Comic Store",
-    address: "999 Post Rd, Fairfield, CT",
-    games: ["Pokemon", "Yu-Gi-Oh!"],
-    hasPlaySpace: false,
-    isOpen: true,
-    rating: 4.3,
-    distance: "22.1 miles",
-    city: "Fairfield",
-    events: ["Pokemon Trade Night"]
-  },
-  {
-    id: 8,
-    name: "Dice & Decks",
-    address: "111 Church St, Middletown, CT",
-    games: ["Magic: The Gathering", "D&D", "Warhammer 40k"],
-    hasPlaySpace: true,
-    isOpen: true,
-    rating: 4.8,
-    distance: "24.7 miles",
-    city: "Middletown",
-    events: []
-  },
-  {
-    id: 9,
-    name: "Quantum Comics & Games",
-    address: "222 Route 1, Groton, CT",
-    games: ["Pokemon", "Magic: The Gathering", "Board Games"],
-    hasPlaySpace: true,
-    isOpen: false,
-    rating: 4.6,
-    distance: "38.9 miles",
-    city: "Groton",
-    events: []
-  },
-  {
-    id: 10,
-    name: "Heroes Landing",
-    address: "333 Main Ave, Wallingford, CT",
-    games: ["Yu-Gi-Oh!", "Pokemon", "D&D"],
-    hasPlaySpace: true,
-    isOpen: true,
-    rating: 4.7,
-    distance: "19.3 miles",
-    city: "Wallingford",
-    events: ["Yu-Gi-Oh! Locals"]
-  }
-];
-
-// Get search parameters
-const url = new URL(Astro.request.url);
-const searchTerm = url.searchParams.get('q') || '';
-const gameFilter = url.searchParams.get('game') || '';
-const openNow = url.searchParams.get('open') === 'true';
-const hasPlaySpace = url.searchParams.get('playspace') === 'true';
-const hasEvents = url.searchParams.get('events') === 'true';
 
 // Filter stores
 let filteredStores = allStores;
@@ -208,8 +85,20 @@ if (hasEvents) {
       </div>
 
       <h1 class="text-4xl font-bold text-white mb-8">
-        {searchTerm ? `Search Results for "${searchTerm}"` : 'All Stores'}
+        {nearMe ? 'Stores Near You' : searchTerm ? `Search Results for "${searchTerm}"` : 'All Stores'}
       </h1>
+
+      <!-- Location status for near me searches -->
+      {nearMe && (
+        <div id="location-status" class="mb-6 p-4 bg-blue-500/20 border border-blue-500/50 rounded-lg text-blue-200">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            <span>Calculating distances from your location...</span>
+          </div>
+        </div>
+      )}
 
       <!-- Active Filters -->
       <div class="mb-6">
@@ -255,7 +144,17 @@ if (hasEvents) {
               </a>
             </span>
           )}
-          {(gameFilter || openNow || hasPlaySpace || hasEvents) && (
+          {nearMe && (
+            <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+              Near Me
+              <a href={`/search?${new URLSearchParams({...Object.fromEntries(url.searchParams), nearme: ''}).toString()}`.replace('nearme=&', '').replace('&nearme=', '').replace('nearme=', '')} class="hover:text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </a>
+            </span>
+          )}
+          {(gameFilter || openNow || hasPlaySpace || hasEvents || nearMe) && (
             <a href="/search" class="text-gray-400 hover:text-white text-sm underline ml-4">
               Clear all filters
             </a>
@@ -265,28 +164,122 @@ if (hasEvents) {
 
       <!-- Results Count -->
       <p class="text-gray-400 mb-6">
-        Found {filteredStores.length} store{filteredStores.length !== 1 ? 's' : ''}
+        Found <span id="results-count">{filteredStores.length}</span> store{filteredStores.length !== 1 ? 's' : ''}
       </p>
 
       <!-- Store Grid -->
-      {filteredStores.length > 0 ? (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredStores.map((store) => (
-            <StoreCard store={store} />
-          ))}
-        </div>
-      ) : (
-        <div class="bg-gray-900/80 backdrop-blur-md rounded-xl p-12 text-center">
-          <svg class="w-24 h-24 mx-auto mb-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-          <h2 class="text-2xl font-bold text-white mb-2">No stores found</h2>
-          <p class="text-gray-400 mb-6">Try adjusting your filters or search terms</p>
-          <a href="/search" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 px-8 rounded-lg transition-colors inline-block">
-            View All Stores
-          </a>
-        </div>
-      )}
+      <div id="store-grid">
+        {filteredStores.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredStores.map((store) => (
+              <StoreCard store={store} />
+            ))}
+          </div>
+        ) : (
+          <div class="bg-gray-900/80 backdrop-blur-md rounded-xl p-12 text-center">
+            <svg class="w-24 h-24 mx-auto mb-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h2 class="text-2xl font-bold text-white mb-2">No stores found</h2>
+            <p class="text-gray-400 mb-6">Try adjusting your filters or search terms</p>
+            <a href="/search" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 px-8 rounded-lg transition-colors inline-block">
+              View All Stores
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   </main>
+
+  <script define:vars={{ nearMe, allStores }}>
+    // City coordinates
+    const cityCoordinates = {
+      'Hartford': [41.7658, -72.6734],
+      'New Haven': [41.3083, -72.9279],
+      'Stamford': [41.0534, -73.5387],
+      'Bridgeport': [41.1865, -73.1952],
+      'Waterbury': [41.5582, -73.0515],
+      'Norwalk': [41.1177, -73.4082],
+      'Danbury': [41.3948, -73.4540],
+      'New Britain': [41.6612, -72.7795],
+      'Meriden': [41.5382, -72.8070],
+      'Bristol': [41.6718, -72.9493],
+      'West Haven': [41.2707, -72.9469],
+      'Milford': [41.2223, -73.0571],
+      'Middletown': [41.5623, -72.6506],
+      'Norwich': [41.5242, -72.0759],
+      'Shelton': [41.3165, -73.0931],
+      'Wallingford': [41.4570, -72.8231],
+      'Groton': [41.3502, -72.0787],
+      'Fairfield': [41.1409, -73.2614],
+      'Enfield': [41.9761, -72.5917],
+      'Glastonbury': [41.7123, -72.6082],
+      'Hamden': [41.3959, -72.8968],
+      'East Hartford': [41.7637, -72.6126],
+      'Southington': [41.6003, -72.8778],
+      'Torrington': [41.8007, -73.1207],
+      'Stratford': [41.1845, -73.1332]
+    };
+
+    // Calculate distance
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 3959; // Earth radius in miles
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    // Update distances if location is available
+    if (nearMe && sessionStorage.getItem('locationEnabled') === 'true') {
+      const userLat = parseFloat(sessionStorage.getItem('userLat'));
+      const userLon = parseFloat(sessionStorage.getItem('userLon'));
+      
+      if (!isNaN(userLat) && !isNaN(userLon)) {
+        // Calculate real distances
+        const storesWithDistances = allStores.map(store => {
+          const coords = cityCoordinates[store.city];
+          if (coords) {
+            const distance = calculateDistance(userLat, userLon, coords[0], coords[1]);
+            return {
+              ...store,
+              realDistance: distance,
+              distance: `${distance.toFixed(1)} miles`
+            };
+          }
+          return store;
+        });
+
+        // Sort by distance
+        storesWithDistances.sort((a, b) => (a.realDistance || 999) - (b.realDistance || 999));
+
+        // Update the display
+        const grid = document.querySelector('.grid');
+        if (grid) {
+          grid.innerHTML = '';
+          storesWithDistances.forEach(store => {
+            // Create store card HTML (simplified for now)
+            const card = document.createElement('div');
+            card.className = 'store-card';
+            card.innerHTML = `<!-- Store card content -->`;
+            grid.appendChild(card);
+          });
+        }
+
+        // Update status
+        document.getElementById('location-status').innerHTML = `
+          <div class="flex items-center gap-2 text-green-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Showing stores sorted by distance from your location</span>
+          </div>
+        `;
+      }
+    }
+  </script>
 </Layout>

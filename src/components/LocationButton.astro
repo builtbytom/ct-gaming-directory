@@ -1,0 +1,111 @@
+---
+// Location button component
+---
+
+<button
+  id="location-button"
+  class="px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all flex items-center gap-2 font-semibold"
+>
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+  </svg>
+  <span id="location-text">Find Stores Near Me</span>
+</button>
+
+<script>
+  // Store locations with approximate coordinates
+  const storeCoordinates: Record<string, [number, number]> = {
+    'Hartford': [41.7658, -72.6734],
+    'New Haven': [41.3083, -72.9279],
+    'Stamford': [41.0534, -73.5387],
+    'Bridgeport': [41.1865, -73.1952],
+    'Waterbury': [41.5582, -73.0515],
+    'Norwalk': [41.1177, -73.4082],
+    'Danbury': [41.3948, -73.4540],
+    'New Britain': [41.6612, -72.7795],
+    'Meriden': [41.5382, -72.8070],
+    'Bristol': [41.6718, -72.9493],
+    'West Haven': [41.2707, -72.9469],
+    'Milford': [41.2223, -73.0571],
+    'Middletown': [41.5623, -72.6506],
+    'Norwich': [41.5242, -72.0759],
+    'Shelton': [41.3165, -73.0931],
+    'Wallingford': [41.4570, -72.8231], // For Dragon's Lair!
+    'Groton': [41.3502, -72.0787],
+    'Fairfield': [41.1409, -73.2614],
+    'Enfield': [41.9761, -72.5917],
+    'Glastonbury': [41.7123, -72.6082],
+    'Hamden': [41.3959, -72.8968],
+    'East Hartford': [41.7637, -72.6126],
+    'Southington': [41.6003, -72.8778],
+    'Torrington': [41.8007, -73.1207],
+    'Stratford': [41.1845, -73.1332]
+  };
+
+  // Calculate distance between two coordinates
+  function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const R = 3959; // Radius of Earth in miles
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  }
+
+  // Get user location and redirect to search with distances
+  document.getElementById('location-button')?.addEventListener('click', async () => {
+    const button = document.getElementById('location-button') as HTMLButtonElement;
+    const text = document.getElementById('location-text') as HTMLSpanElement;
+    
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser');
+      return;
+    }
+
+    // Update button state
+    button.disabled = true;
+    text.textContent = 'Getting your location...';
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLon = position.coords.longitude;
+        
+        // Store user location in sessionStorage
+        sessionStorage.setItem('userLat', userLat.toString());
+        sessionStorage.setItem('userLon', userLon.toString());
+        sessionStorage.setItem('locationEnabled', 'true');
+        
+        // Redirect to search page
+        window.location.href = '/search?nearme=true';
+      },
+      (error) => {
+        button.disabled = false;
+        text.textContent = 'Find Stores Near Me';
+        
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            alert('Please enable location services to find stores near you');
+            break;
+          case error.POSITION_UNAVAILABLE:
+            alert('Location information is unavailable');
+            break;
+          case error.TIMEOUT:
+            alert('Location request timed out');
+            break;
+          default:
+            alert('An unknown error occurred');
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
+  });
+</script>
