@@ -3,12 +3,13 @@
 ---
 
 <div class="max-w-3xl mx-auto">
-  <form class="relative">
+  <form class="relative" action="/search" method="get">
     <div class="flex gap-2">
       <!-- Search Input -->
       <div class="flex-1 relative">
         <input
           type="text"
+          name="q"
           placeholder="Search by game, store name, or location..."
           class="w-full pl-12 pr-6 py-4 bg-gray-800/80 backdrop-blur-md text-white placeholder-gray-400 rounded-xl border-2 border-gray-700 focus:border-yellow-400 focus:outline-none transition-colors"
         />
@@ -36,23 +37,23 @@
   
   <!-- Quick Filters -->
   <div class="flex flex-wrap gap-2 mt-4 justify-center">
-    <button class="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-lg hover:bg-yellow-400 hover:text-gray-900 transition-colors text-sm font-semibold">
+    <a href="/search?open=true" class="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-lg hover:bg-yellow-400 hover:text-gray-900 transition-colors text-sm font-semibold">
       Open Now
-    </button>
-    <button class="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-lg hover:bg-yellow-400 hover:text-gray-900 transition-colors text-sm font-semibold">
+    </a>
+    <a href="/search?game=Pokemon" class="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-lg hover:bg-yellow-400 hover:text-gray-900 transition-colors text-sm font-semibold">
       Pokemon
-    </button>
-    <button class="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-lg hover:bg-yellow-400 hover:text-gray-900 transition-colors text-sm font-semibold">
+    </a>
+    <a href="/search?game=Magic%3A%20The%20Gathering" class="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-lg hover:bg-yellow-400 hover:text-gray-900 transition-colors text-sm font-semibold">
       Magic: The Gathering
-    </button>
-    <button class="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-lg hover:bg-yellow-400 hover:text-gray-900 transition-colors text-sm font-semibold">
+    </a>
+    <a href="/search?game=Warhammer%2040k" class="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-lg hover:bg-yellow-400 hover:text-gray-900 transition-colors text-sm font-semibold">
       Warhammer 40k
-    </button>
-    <button class="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-lg hover:bg-yellow-400 hover:text-gray-900 transition-colors text-sm font-semibold">
+    </a>
+    <a href="/search?playspace=true" class="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-lg hover:bg-yellow-400 hover:text-gray-900 transition-colors text-sm font-semibold">
       Has Play Space
-    </button>
-    <button class="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-lg hover:bg-yellow-400 hover:text-gray-900 transition-colors text-sm font-semibold">
+    </a>
+    <a href="/search?events=true" class="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-lg hover:bg-yellow-400 hover:text-gray-900 transition-colors text-sm font-semibold">
       Events Today
-    </button>
+    </a>
   </div>
 </div>

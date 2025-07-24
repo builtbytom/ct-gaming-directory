@@ -1,0 +1,268 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StoreCard from '../components/StoreCard.astro';
+import SearchBar from '../components/SearchBar.astro';
+
+// In production, this would come from your database
+const allStores = [
+  {
+    id: 1,
+    name: "The Battle Standard",
+    address: "123 Main St, Hartford, CT",
+    games: ["Magic: The Gathering", "Pokemon", "Warhammer 40k"],
+    hasPlaySpace: true,
+    isOpen: true,
+    rating: 4.8,
+    distance: "2.3 miles",
+    city: "Hartford",
+    events: ["Magic Commander Night", "Pokemon Tournament"]
+  },
+  {
+    id: 2,
+    name: "Dragon's Den Gaming",
+    address: "456 Oak Ave, New Haven, CT",
+    games: ["Pokemon", "Yu-Gi-Oh!", "Board Games"],
+    hasPlaySpace: true,
+    isOpen: false,
+    rating: 4.6,
+    distance: "5.1 miles",
+    city: "New Haven",
+    events: []
+  },
+  {
+    id: 3,
+    name: "Tabletop Kingdom",
+    address: "789 Elm St, Stamford, CT",
+    games: ["D&D", "Board Games", "Magic: The Gathering"],
+    hasPlaySpace: true,
+    isOpen: true,
+    rating: 4.9,
+    distance: "8.7 miles",
+    city: "Stamford",
+    events: ["D&D Adventure League"]
+  },
+  {
+    id: 4,
+    name: "Mythic Games & Comics",
+    address: "321 State St, Bridgeport, CT",
+    games: ["Magic: The Gathering", "Pokemon", "Warhammer 40k"],
+    hasPlaySpace: false,
+    isOpen: true,
+    rating: 4.5,
+    distance: "12.4 miles",
+    city: "Bridgeport",
+    events: []
+  },
+  {
+    id: 5,
+    name: "Card Citadel",
+    address: "555 Park Ave, Waterbury, CT",
+    games: ["Pokemon", "Warhammer 40k", "Board Games"],
+    hasPlaySpace: true,
+    isOpen: true,
+    rating: 4.7,
+    distance: "15.2 miles",
+    city: "Waterbury",
+    events: ["Warhammer Paint Night"]
+  },
+  {
+    id: 6,
+    name: "Gamer's Haven",
+    address: "777 Commerce Dr, Norwalk, CT",
+    games: ["Warhammer 40k", "D&D", "Board Games"],
+    hasPlaySpace: true,
+    isOpen: false,
+    rating: 4.9,
+    distance: "18.6 miles",
+    city: "Norwalk",
+    events: []
+  },
+  {
+    id: 7,
+    name: "The Comic Store",
+    address: "999 Post Rd, Fairfield, CT",
+    games: ["Pokemon", "Yu-Gi-Oh!"],
+    hasPlaySpace: false,
+    isOpen: true,
+    rating: 4.3,
+    distance: "22.1 miles",
+    city: "Fairfield",
+    events: ["Pokemon Trade Night"]
+  },
+  {
+    id: 8,
+    name: "Dice & Decks",
+    address: "111 Church St, Middletown, CT",
+    games: ["Magic: The Gathering", "D&D", "Warhammer 40k"],
+    hasPlaySpace: true,
+    isOpen: true,
+    rating: 4.8,
+    distance: "24.7 miles",
+    city: "Middletown",
+    events: []
+  },
+  {
+    id: 9,
+    name: "Quantum Comics & Games",
+    address: "222 Route 1, Groton, CT",
+    games: ["Pokemon", "Magic: The Gathering", "Board Games"],
+    hasPlaySpace: true,
+    isOpen: false,
+    rating: 4.6,
+    distance: "38.9 miles",
+    city: "Groton",
+    events: []
+  },
+  {
+    id: 10,
+    name: "Heroes Landing",
+    address: "333 Main Ave, Wallingford, CT",
+    games: ["Yu-Gi-Oh!", "Pokemon", "D&D"],
+    hasPlaySpace: true,
+    isOpen: true,
+    rating: 4.7,
+    distance: "19.3 miles",
+    city: "Wallingford",
+    events: ["Yu-Gi-Oh! Locals"]
+  }
+];
+
+// Get search parameters
+const url = new URL(Astro.request.url);
+const searchTerm = url.searchParams.get('q') || '';
+const gameFilter = url.searchParams.get('game') || '';
+const openNow = url.searchParams.get('open') === 'true';
+const hasPlaySpace = url.searchParams.get('playspace') === 'true';
+const hasEvents = url.searchParams.get('events') === 'true';
+
+// Filter stores
+let filteredStores = allStores;
+
+// Text search
+if (searchTerm) {
+  filteredStores = filteredStores.filter(store => 
+    store.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    store.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    store.games.some(game => game.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+}
+
+// Game filter
+if (gameFilter) {
+  filteredStores = filteredStores.filter(store => 
+    store.games.includes(gameFilter)
+  );
+}
+
+// Open now filter
+if (openNow) {
+  filteredStores = filteredStores.filter(store => store.isOpen);
+}
+
+// Play space filter
+if (hasPlaySpace) {
+  filteredStores = filteredStores.filter(store => store.hasPlaySpace);
+}
+
+// Events today filter
+if (hasEvents) {
+  filteredStores = filteredStores.filter(store => store.events.length > 0);
+}
+---
+
+<Layout title="Search Results - CT Gaming Directory">
+  <main class="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+    <!-- Header -->
+    <div class="container mx-auto px-4 py-8">
+      <div class="flex items-center justify-between mb-6">
+        <a href="/" class="inline-flex items-center text-yellow-400 hover:text-yellow-300 transition-colors">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Back to Home
+        </a>
+      </div>
+
+      <h1 class="text-4xl font-bold text-white mb-8">
+        {searchTerm ? `Search Results for "${searchTerm}"` : 'All Stores'}
+      </h1>
+
+      <!-- Active Filters -->
+      <div class="mb-6">
+        <div class="flex flex-wrap gap-2 items-center">
+          <span class="text-gray-400">Active Filters:</span>
+          {gameFilter && (
+            <span class="bg-yellow-400/20 text-yellow-400 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+              {gameFilter}
+              <a href={`/search?${new URLSearchParams({...Object.fromEntries(url.searchParams), game: ''}).toString()}`.replace('game=&', '').replace('&game=', '').replace('game=', '')} class="hover:text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </a>
+            </span>
+          )}
+          {openNow && (
+            <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+              Open Now
+              <a href={`/search?${new URLSearchParams({...Object.fromEntries(url.searchParams), open: ''}).toString()}`.replace('open=&', '').replace('&open=', '').replace('open=', '')} class="hover:text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </a>
+            </span>
+          )}
+          {hasPlaySpace && (
+            <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+              Has Play Space
+              <a href={`/search?${new URLSearchParams({...Object.fromEntries(url.searchParams), playspace: ''}).toString()}`.replace('playspace=&', '').replace('&playspace=', '').replace('playspace=', '')} class="hover:text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </a>
+            </span>
+          )}
+          {hasEvents && (
+            <span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+              Events Today
+              <a href={`/search?${new URLSearchParams({...Object.fromEntries(url.searchParams), events: ''}).toString()}`.replace('events=&', '').replace('&events=', '').replace('events=', '')} class="hover:text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </a>
+            </span>
+          )}
+          {(gameFilter || openNow || hasPlaySpace || hasEvents) && (
+            <a href="/search" class="text-gray-400 hover:text-white text-sm underline ml-4">
+              Clear all filters
+            </a>
+          )}
+        </div>
+      </div>
+
+      <!-- Results Count -->
+      <p class="text-gray-400 mb-6">
+        Found {filteredStores.length} store{filteredStores.length !== 1 ? 's' : ''}
+      </p>
+
+      <!-- Store Grid -->
+      {filteredStores.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredStores.map((store) => (
+            <StoreCard store={store} />
+          ))}
+        </div>
+      ) : (
+        <div class="bg-gray-900/80 backdrop-blur-md rounded-xl p-12 text-center">
+          <svg class="w-24 h-24 mx-auto mb-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <h2 class="text-2xl font-bold text-white mb-2">No stores found</h2>
+          <p class="text-gray-400 mb-6">Try adjusting your filters or search terms</p>
+          <a href="/search" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 px-8 rounded-lg transition-colors inline-block">
+            View All Stores
+          </a>
+        </div>
+      )}
+    </div>
+  </main>
+</Layout>
