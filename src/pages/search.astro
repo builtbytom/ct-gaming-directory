@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import StoreCard from '../components/StoreCard.astro';
 import SearchBar from '../components/SearchBar.astro';
 import storesData from '../data/stores.json';
+import { parseStoreName } from '../utils/parseStoreName.js';
 
 // Get search parameters
 const url = new URL(Astro.request.url);
@@ -17,7 +18,7 @@ const nearMe = url.searchParams.get('nearme') === 'true';
 const allStores = storesData.map((store, index) => ({
   id: index + 1,
   name: store.name,
-  address: `${store.city}, CT`,
+  address: `${parseStoreName(store.name, store.city)}, CT`,
   games: store.gamesFound.map(g => {
     const gameMap: Record<string, string> = {
       'pokemon cards': 'Pokemon',
@@ -30,7 +31,7 @@ const allStores = storesData.map((store, index) => ({
   }),
   hasPlaySpace: Math.random() > 0.3,
   isOpen: Math.random() > 0.4,
-  rating: store.rating || (4.0 + Math.random() * 0.9),
+  rating: store.rating || parseFloat((4.0 + Math.random() * 0.9).toFixed(1)),
   distance: `${Math.floor(Math.random() * 40)}.${Math.floor(Math.random() * 9)} miles`,
   city: store.city,
   events: []

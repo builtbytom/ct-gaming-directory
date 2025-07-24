@@ -4,6 +4,7 @@ import StoreCard from '../components/StoreCard.astro';
 import SearchBar from '../components/SearchBar.astro';
 import LocationButton from '../components/LocationButton.astro';
 import storesData from '../data/stores.json';
+import { parseStoreName } from '../utils/parseStoreName.js';
 
 // Get a sample of stores for the homepage
 const stores = storesData
@@ -12,7 +13,7 @@ const stores = storesData
   .map((store, index) => ({
     id: index + 1,
     name: store.name,
-    address: `${store.city}, CT`,
+    address: `${parseStoreName(store.name, store.city)}, CT`,
     games: store.gamesFound.map(g => {
       const gameMap: Record<string, string> = {
         'pokemon cards': 'Pokemon',
@@ -25,7 +26,7 @@ const stores = storesData
     }),
     hasPlaySpace: Math.random() > 0.3, // We'll update this when stores claim their listing
     isOpen: Math.random() > 0.4, // Placeholder until we get real hours
-    rating: 4.5 + Math.random() * 0.4, // Placeholder ratings
+    rating: parseFloat((4.5 + Math.random() * 0.4).toFixed(1)), // Placeholder ratings
     distance: `${Math.floor(Math.random() * 30)}.${Math.floor(Math.random() * 9)} miles`
   }));
 

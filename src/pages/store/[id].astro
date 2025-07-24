@@ -2,8 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import BasicStoreDetail from '../../components/BasicStoreDetail.astro';
 import EnhancedStoreDetail from '../../components/EnhancedStoreDetail.astro';
-
 import storesData from '../../data/stores.json';
+import { parseStoreName } from '../../utils/parseStoreName.js';
 
 export function getStaticPaths() {
   // Use real store data
@@ -11,7 +11,7 @@ export function getStaticPaths() {
     id: String(index + 1),
     slug: store.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
     name: store.name,
-    address: store.address || `${store.city}, CT`,
+    address: store.address || `${parseStoreName(store.name, store.city)}, CT`,
     phone: null,
     website: null,
     games: store.gamesFound.map(g => {
@@ -26,7 +26,7 @@ export function getStaticPaths() {
     }),
     hasPlaySpace: Math.random() > 0.3,
     isOpen: Math.random() > 0.4,
-    rating: store.rating || (4.0 + Math.random() * 0.9),
+    rating: store.rating || parseFloat((4.0 + Math.random() * 0.9).toFixed(1)),
     totalReviews: store.reviewCount || Math.floor(Math.random() * 100) + 20,
     isClaimed: false,
     hours: {
