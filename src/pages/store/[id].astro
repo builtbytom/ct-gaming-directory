@@ -1,0 +1,134 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BasicStoreDetail from '../../components/BasicStoreDetail.astro';
+import EnhancedStoreDetail from '../../components/EnhancedStoreDetail.astro';
+
+export function getStaticPaths() {
+  // In production, this would come from your database
+  const stores = [
+    {
+      id: "1",
+      slug: "the-battle-standard",
+      name: "The Battle Standard",
+      address: "123 Main St, Hartford, CT 06103",
+      phone: "(860) 555-0123",
+      website: "thebattlestandard.com",
+      games: ["Magic: The Gathering", "Pokemon", "Warhammer 40k"],
+      hasPlaySpace: true,
+      isOpen: true,
+      rating: 4.8,
+      totalReviews: 127,
+      isClaimed: false,
+      hours: {
+        monday: "12:00 PM - 8:00 PM",
+        tuesday: "12:00 PM - 8:00 PM",
+        wednesday: "12:00 PM - 10:00 PM",
+        thursday: "12:00 PM - 10:00 PM",
+        friday: "12:00 PM - 11:00 PM",
+        saturday: "10:00 AM - 11:00 PM",
+        sunday: "12:00 PM - 6:00 PM"
+      },
+      events: [
+        { day: "Wednesday", time: "6:00 PM", game: "Magic: The Gathering", format: "Commander Night", entry: "$5" },
+        { day: "Friday", time: "7:00 PM", game: "Pokemon", format: "Standard Tournament", entry: "$10" },
+        { day: "Saturday", time: "2:00 PM", game: "Warhammer 40k", format: "2000pt Games", entry: "Free" }
+      ]
+    },
+    {
+      id: "2",
+      slug: "dragons-den-gaming",
+      name: "Dragon's Den Gaming",
+      address: "456 Oak Ave, New Haven, CT 06511",
+      phone: "(203) 555-0456",
+      website: "dragonsden-ct.com",
+      games: ["Pokemon", "Yu-Gi-Oh!", "Board Games"],
+      hasPlaySpace: true,
+      isOpen: false,
+      rating: 4.6,
+      totalReviews: 89,
+      isClaimed: true,
+      // Enhanced data for claimed stores
+      description: "Welcome to Dragon's Den Gaming, Connecticut's premier destination for Pokemon and Yu-Gi-Oh! We host weekly tournaments, maintain a huge singles inventory, and our friendly staff is always ready to help you build your next winning deck!",
+      photos: [
+        "/images/dragons-den-1.jpg",
+        "/images/dragons-den-2.jpg",
+        "/images/dragons-den-3.jpg"
+      ],
+      amenities: [
+        "Free WiFi",
+        "Snack Bar",
+        "Private Event Room",
+        "Wheelchair Accessible",
+        "Air Conditioning",
+        "Ample Parking"
+      ],
+      socialMedia: {
+        facebook: "dragonsdenct",
+        instagram: "dragonsden_gaming",
+        discord: "discord.gg/dragonsden"
+      },
+      specialOffers: [
+        "10% off singles every Tuesday",
+        "Buy 3 booster packs, get 1 free on Fridays",
+        "Birthday month discount - 15% off everything!"
+      ],
+      upcomingEvents: [
+        {
+          date: "July 28, 2025",
+          name: "Pokemon Regional Qualifier",
+          description: "Top 8 players qualify for Regionals! Prizes include booster boxes and exclusive promos.",
+          spots: "48/64"
+        },
+        {
+          date: "August 3, 2025",
+          name: "Yu-Gi-Oh! Anniversary Tournament", 
+          description: "Celebrating 25 years of Yu-Gi-Oh! Special prizes and vintage format.",
+          spots: "32/32 - SOLD OUT"
+        }
+      ],
+      hours: {
+        monday: "Closed",
+        tuesday: "2:00 PM - 9:00 PM",
+        wednesday: "2:00 PM - 9:00 PM",
+        thursday: "2:00 PM - 9:00 PM",
+        friday: "2:00 PM - 11:00 PM",
+        saturday: "11:00 AM - 11:00 PM",
+        sunday: "12:00 PM - 7:00 PM"
+      },
+      events: [
+        { day: "Tuesday", time: "6:30 PM", game: "Pokemon", format: "Gym Challenge", entry: "$5" },
+        { day: "Thursday", time: "6:00 PM", game: "Yu-Gi-Oh!", format: "Advanced Format", entry: "$10" },
+        { day: "Saturday", time: "1:00 PM", game: "Board Games", format: "Open Play", entry: "Free" },
+        { day: "Saturday", time: "6:00 PM", game: "Pokemon", format: "Expanded Tournament", entry: "$15" }
+      ]
+    }
+  ];
+
+  return stores.map(store => ({
+    params: { id: store.id },
+    props: { store }
+  }));
+}
+
+const { store } = Astro.props;
+---
+
+<Layout title={`${store.name} - CT Gaming Directory`}>
+  <main class="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+    <!-- Back Button -->
+    <div class="container mx-auto px-4 pt-6">
+      <a href="/" class="inline-flex items-center text-yellow-400 hover:text-yellow-300 transition-colors">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to Directory
+      </a>
+    </div>
+
+    {store.isClaimed ? (
+      <EnhancedStoreDetail store={store} />
+    ) : (
+      <BasicStoreDetail store={store} />
+    )}
+  </main>
+</Layout>
