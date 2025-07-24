@@ -1,0 +1,190 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StoreCard from '../components/StoreCard.astro';
+import SearchBar from '../components/SearchBar.astro';
+
+// Mock data for now - will be replaced with real data later
+const stores = [
+  {
+    id: 1,
+    name: "The Battle Standard",
+    address: "123 Main St, Hartford, CT",
+    games: ["Magic: The Gathering", "Pokemon", "Warhammer 40k"],
+    hasPlaySpace: true,
+    isOpen: true,
+    rating: 4.8,
+    distance: "2.3 miles"
+  },
+  {
+    id: 2,
+    name: "Dragon's Den Gaming",
+    address: "456 Oak Ave, New Haven, CT",
+    games: ["Pokemon", "Yu-Gi-Oh!", "Board Games"],
+    hasPlaySpace: true,
+    isOpen: false,
+    rating: 4.6,
+    distance: "5.1 miles"
+  },
+  {
+    id: 3,
+    name: "Tabletop Kingdom",
+    address: "789 Elm St, Stamford, CT",
+    games: ["D&D", "Board Games", "Magic: The Gathering"],
+    hasPlaySpace: true,
+    isOpen: true,
+    rating: 4.9,
+    distance: "8.7 miles"
+  },
+  {
+    id: 4,
+    name: "Mythic Games & Comics",
+    address: "321 State St, Bridgeport, CT",
+    games: ["Magic: The Gathering", "Pokemon", "Yu-Gi-Oh!"],
+    hasPlaySpace: false,
+    isOpen: true,
+    rating: 4.5,
+    distance: "12.4 miles"
+  },
+  {
+    id: 5,
+    name: "Card Citadel",
+    address: "555 Park Ave, Waterbury, CT",
+    games: ["Pokemon", "Board Games"],
+    hasPlaySpace: true,
+    isOpen: true,
+    rating: 4.7,
+    distance: "15.2 miles"
+  },
+  {
+    id: 6,
+    name: "Gamer's Haven",
+    address: "777 Commerce Dr, Norwalk, CT",
+    games: ["Warhammer 40k", "D&D", "Board Games"],
+    hasPlaySpace: true,
+    isOpen: false,
+    rating: 4.9,
+    distance: "18.6 miles"
+  },
+  {
+    id: 7,
+    name: "The Comic Store",
+    address: "999 Post Rd, Fairfield, CT",
+    games: ["Pokemon", "Yu-Gi-Oh!"],
+    hasPlaySpace: false,
+    isOpen: true,
+    rating: 4.3,
+    distance: "22.1 miles"
+  },
+  {
+    id: 8,
+    name: "Dice & Decks",
+    address: "111 Church St, Middletown, CT",
+    games: ["Magic: The Gathering", "D&D", "Board Games"],
+    hasPlaySpace: true,
+    isOpen: true,
+    rating: 4.8,
+    distance: "24.7 miles"
+  },
+  {
+    id: 9,
+    name: "Quantum Comics & Games",
+    address: "222 Route 1, Groton, CT",
+    games: ["Pokemon", "Magic: The Gathering", "Board Games"],
+    hasPlaySpace: true,
+    isOpen: false,
+    rating: 4.6,
+    distance: "38.9 miles"
+  },
+  {
+    id: 10,
+    name: "Heroes Landing",
+    address: "333 Main Ave, Wallingford, CT",
+    games: ["Yu-Gi-Oh!", "Pokemon", "D&D"],
+    hasPlaySpace: true,
+    isOpen: true,
+    rating: 4.7,
+    distance: "19.3 miles"
+  }
+];
+---
+
+<Layout title="CT Gaming Directory - Find Your Local Game Store">
+  <main class="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+    <!-- Hero Section -->
+    <div class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-black/20"></div>
+      <div class="relative container mx-auto px-4 py-12">
+        <h1 class="text-5xl md:text-6xl font-bold text-white text-center mb-4">
+          <span class="bg-gradient-to-r from-yellow-400 to-orange-500 text-transparent bg-clip-text">
+            Connecticut Gaming Directory
+          </span>
+        </h1>
+        <p class="text-xl text-gray-200 text-center mb-8">
+          Find game stores, play spaces, and tournaments near you
+        </p>
+        
+        <!-- Search Section -->
+        <SearchBar />
+      </div>
+      
+      <!-- Decorative Elements -->
+      <div class="absolute top-10 left-10 w-20 h-20 opacity-20">
+        <div class="transform rotate-45 bg-gradient-to-br from-red-500 to-pink-500 rounded-lg w-full h-full"></div>
+      </div>
+      <div class="absolute bottom-10 right-10 w-24 h-24 opacity-20">
+        <div class="transform -rotate-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full w-full h-full"></div>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="container mx-auto px-4 py-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 text-center">
+          <div class="text-3xl font-bold text-yellow-400">28</div>
+          <div class="text-sm text-gray-300">Game Stores</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 text-center">
+          <div class="text-3xl font-bold text-green-400">15</div>
+          <div class="text-sm text-gray-300">Open Now</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 text-center">
+          <div class="text-3xl font-bold text-blue-400">142</div>
+          <div class="text-sm text-gray-300">Events This Week</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 text-center">
+          <div class="text-3xl font-bold text-purple-400">7</div>
+          <div class="text-sm text-gray-300">Tournaments Today</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Store Grid -->
+    <div class="container mx-auto px-4 py-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-white">Nearby Stores</h2>
+        <button class="text-yellow-400 hover:text-yellow-300 transition-colors">
+          View Map →
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {stores.map((store) => (
+          <StoreCard store={store} />
+        ))}
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="container mx-auto px-4 py-16">
+      <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 text-center">
+        <h3 class="text-3xl font-bold text-white mb-4">Own a Game Store?</h3>
+        <p class="text-xl text-gray-200 mb-6">
+          Claim your free listing and connect with local players
+        </p>
+        <button class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 px-8 rounded-lg transition-colors">
+          Claim Your Store
+        </button>
+      </div>
+    </div>
+  </main>
+</Layout>

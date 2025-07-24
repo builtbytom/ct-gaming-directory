@@ -1,0 +1,103 @@
+---
+export interface Props {
+  store: {
+    id: number;
+    name: string;
+    address: string;
+    games: string[];
+    hasPlaySpace: boolean;
+    isOpen: boolean;
+    rating: number;
+    distance: string;
+  };
+}
+
+const { store } = Astro.props;
+
+// Game-specific colors
+const gameColors: Record<string, string> = {
+  "Magic: The Gathering": "bg-orange-500",
+  "Pokemon": "bg-yellow-500",
+  "Yu-Gi-Oh!": "bg-purple-500",
+  "Warhammer 40k": "bg-gray-700",
+  "D&D": "bg-red-600",
+  "Board Games": "bg-green-500"
+};
+---
+
+<div class="group relative bg-gray-900 rounded-xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 border-2 border-gray-800 hover:border-yellow-400">
+  <!-- Card Border Glow Effect -->
+  <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-20 transition-opacity"></div>
+  
+  <!-- Store Status Badge -->
+  <div class="absolute top-4 right-4 z-10">
+    {store.isOpen ? (
+      <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full animate-pulse">
+        OPEN NOW
+      </span>
+    ) : (
+      <span class="bg-gray-600 text-gray-300 text-xs font-bold px-3 py-1 rounded-full">
+        CLOSED
+      </span>
+    )}
+  </div>
+
+  <!-- Card Content -->
+  <div class="relative p-6">
+    <!-- Store Name & Rating -->
+    <div class="mb-4">
+      <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-yellow-400 transition-colors">
+        {store.name}
+      </h3>
+      <div class="flex items-center gap-2">
+        <div class="flex text-yellow-400">
+          {[...Array(5)].map((_, i) => (
+            <svg class={`w-4 h-4 ${i < Math.floor(store.rating) ? 'fill-current' : 'fill-gray-600'}`} viewBox="0 0 20 20">
+              <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+            </svg>
+          ))}
+        </div>
+        <span class="text-sm text-gray-400">{store.rating}</span>
+      </div>
+    </div>
+
+    <!-- Address & Distance -->
+    <div class="mb-4">
+      <p class="text-gray-400 text-sm">{store.address}</p>
+      <p class="text-yellow-400 text-sm font-semibold">{store.distance}</p>
+    </div>
+
+    <!-- Games Available -->
+    <div class="mb-4">
+      <div class="flex flex-wrap gap-2">
+        {store.games.map((game) => (
+          <span class={`${gameColors[game] || 'bg-gray-600'} text-white text-xs px-2 py-1 rounded-lg font-semibold`}>
+            {game}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="flex items-center justify-between">
+      <div class="flex gap-3">
+        {store.hasPlaySpace && (
+          <div class="flex items-center gap-1 text-blue-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"></path>
+            </svg>
+            <span class="text-xs">Play Space</span>
+          </div>
+        )}
+      </div>
+      
+      <!-- View Details Button -->
+      <button class="text-yellow-400 hover:text-yellow-300 font-semibold text-sm transition-colors">
+        View Details →
+      </button>
+    </div>
+  </div>
+
+  <!-- Hover Effect Border -->
+  <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform"></div>
+</div>

@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Find gaming and hobby stores in Connecticut. Discover where to play Magic, Pokemon, Warhammer, and board games near you." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --gaming-purple: #7c3aed;
+    --gaming-blue: #2563eb;
+    --gaming-pink: #ec4899;
+    --gaming-yellow: #fbbf24;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 0.05em;
+  }
+</style>
