@@ -1,0 +1,20 @@
+{
+  "name": "ct-gaming-scraper",
+  "version": "1.0.0",
+  "description": "Scraper for Connecticut gaming stores",
+  "main": "scraper.js",
+  "type": "module",
+  "scripts": {
+    "scrape": "node scraper.js",
+    "scrape:auto": "node automated-scraper.js",
+    "scrape:google": "node google-places.js",
+    "scrape:facebook": "node facebook-events.js"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0",
+    "cheerio": "^1.0.0-rc.12",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "p-limit": "^6.1.0"
+  }
+}

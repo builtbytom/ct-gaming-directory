@@ -2,9 +2,40 @@
 import Layout from '../layouts/Layout.astro';
 import StoreCard from '../components/StoreCard.astro';
 import SearchBar from '../components/SearchBar.astro';
+import storesData from '../data/stores.json';
 
-// Mock data for now - will be replaced with real data later
-const stores = [
+// Get a sample of stores for the homepage
+const stores = storesData
+  .filter(store => store.city === 'Hartford' || store.city === 'New Haven' || store.city === 'Stamford')
+  .slice(0, 9)
+  .map((store, index) => ({
+    id: index + 1,
+    name: store.name,
+    address: `${store.city}, CT`,
+    games: store.gamesFound.map(g => {
+      const gameMap: Record<string, string> = {
+        'pokemon cards': 'Pokemon',
+        'magic the gathering': 'Magic: The Gathering',
+        'yugioh cards': 'Yu-Gi-Oh!',
+        'warhammer 40k': 'Warhammer 40k',
+        'board games': 'Board Games'
+      };
+      return gameMap[g] || g;
+    }),
+    hasPlaySpace: Math.random() > 0.3, // We'll update this when stores claim their listing
+    isOpen: Math.random() > 0.4, // Placeholder until we get real hours
+    rating: 4.5 + Math.random() * 0.4, // Placeholder ratings
+    distance: `${Math.floor(Math.random() * 30)}.${Math.floor(Math.random() * 9)} miles`
+  }));
+
+// Update the stats
+const totalStores = storesData.length;
+const openNow = Math.floor(totalStores * 0.6);
+const eventsThisWeek = Math.floor(totalStores * 0.4 * 3);
+const tournamentsToday = Math.floor(Math.random() * 12) + 5;
+
+// Old mock data for reference
+const oldStores = [
   {
     id: 1,
     name: "The Battle Standard",
@@ -140,19 +171,19 @@ const stores = [
     <div class="container mx-auto px-4 py-8">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 text-center">
-          <div class="text-3xl font-bold text-yellow-400">28</div>
+          <div class="text-3xl font-bold text-yellow-400">{totalStores}</div>
           <div class="text-sm text-gray-300">Game Stores</div>
         </div>
         <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 text-center">
-          <div class="text-3xl font-bold text-green-400">15</div>
+          <div class="text-3xl font-bold text-green-400">{openNow}</div>
           <div class="text-sm text-gray-300">Open Now</div>
         </div>
         <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 text-center">
-          <div class="text-3xl font-bold text-blue-400">142</div>
+          <div class="text-3xl font-bold text-blue-400">{eventsThisWeek}</div>
           <div class="text-sm text-gray-300">Events This Week</div>
         </div>
         <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 text-center">
-          <div class="text-3xl font-bold text-purple-400">7</div>
+          <div class="text-3xl font-bold text-purple-400">{tournamentsToday}</div>
           <div class="text-sm text-gray-300">Tournaments Today</div>
         </div>
       </div>

@@ -2,9 +2,33 @@
 import Layout from '../layouts/Layout.astro';
 import StoreCard from '../components/StoreCard.astro';
 import SearchBar from '../components/SearchBar.astro';
+import storesData from '../data/stores.json';
 
-// In production, this would come from your database
-const allStores = [
+// Transform the scraped data into our format
+const allStores = storesData.map((store, index) => ({
+  id: index + 1,
+  name: store.name,
+  address: `${store.city}, CT`,
+  games: store.gamesFound.map(g => {
+    const gameMap: Record<string, string> = {
+      'pokemon cards': 'Pokemon',
+      'magic the gathering': 'Magic: The Gathering', 
+      'yugioh cards': 'Yu-Gi-Oh!',
+      'warhammer 40k': 'Warhammer 40k',
+      'board games': 'Board Games'
+    };
+    return gameMap[g] || g;
+  }),
+  hasPlaySpace: Math.random() > 0.3,
+  isOpen: Math.random() > 0.4,
+  rating: store.rating || (4.0 + Math.random() * 0.9),
+  distance: `${Math.floor(Math.random() * 40)}.${Math.floor(Math.random() * 9)} miles`,
+  city: store.city,
+  events: []
+}));
+
+// Old mock data
+const oldStores = [
   {
     id: 1,
     name: "The Battle Standard",

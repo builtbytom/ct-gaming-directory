@@ -1,0 +1,19 @@
+Connecticut Game Store Scraping Summary
+==========================================
+Total stores found: 373
+Scraping completed: 7/24/2025, 4:54:55 PM
+
+Sample stores found:
+1. Alternate Universe LLC (Bridgeport) - no rating
+2. Av Sports Cards (Bridgeport) - no rating
+3. Battlegrounds Gaming (Bridgeport) - no rating
+4. Dr Cards And Gaming (Bridgeport) - no rating
+5. Elm City Games (Bridgeport) - no rating
+6. Fire And Dice (Bridgeport) - no rating
+7. Fun Stop Collectibles (Bridgeport) - no rating
+8. Heroes Comics & Cards (Bridgeport) - no rating
+9. HobbyTown (Bridgeport) - no rating
+10. Immaculate Cards (Bridgeport) - no rating
+
+Cities searched: Hartford, New Haven, Stamford, Bridgeport, Waterbury, Norwalk, Danbury, New Britain, Meriden, Bristol, West Haven, Milford, Middletown, Norwich, Shelton
+Game types searched: pokemon cards, magic the gathering, yugioh cards, warhammer 40k, board games
