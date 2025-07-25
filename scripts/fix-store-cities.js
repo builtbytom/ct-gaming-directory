@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { parseStoreName } from '../src/utils/parseStoreName.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -30,7 +31,8 @@ async function fixStoreCities() {
   
   stores.forEach(store => {
     const knownCity = knownStoreLocations[store.name];
-    const actualCity = knownCity || store.city;
+    const parsedCity = parseStoreName(store.name, store.city);
+    const actualCity = knownCity || parsedCity;
     
     // Use store name + actual city as key for deduplication
     const key = `${store.name}-${actualCity}`;

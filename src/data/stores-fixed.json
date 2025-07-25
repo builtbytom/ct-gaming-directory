@@ -509,25 +509,6 @@
     ]
   },
   {
-    "name": "Amato's Toy and Hobby Middletown",
-    "rating": null,
-    "reviewCount": 0,
-    "address": "",
-    "hoursStatus": "",
-    "scrapedAt": "2025-07-24T20:49:33.296Z",
-    "city": "Bristol",
-    "gamesFound": [
-      "warhammer 40k"
-    ],
-    "searchQueries": [
-      "warhammer 40k store Bristol Connecticut"
-    ],
-    "actualCity": "Bristol",
-    "foundInSearches": [
-      "Bristol"
-    ]
-  },
-  {
     "name": "Back Again Board Game Cafe LLC",
     "rating": null,
     "reviewCount": 0,
@@ -1713,25 +1694,6 @@
     ]
   },
   {
-    "name": "Amato's Toy and Hobby Middletown",
-    "rating": null,
-    "reviewCount": 0,
-    "address": "",
-    "hoursStatus": "",
-    "scrapedAt": "2025-07-24T20:40:21.149Z",
-    "city": "Hartford",
-    "gamesFound": [
-      "warhammer 40k"
-    ],
-    "searchQueries": [
-      "warhammer 40k store Hartford Connecticut"
-    ],
-    "actualCity": "Hartford",
-    "foundInSearches": [
-      "Hartford"
-    ]
-  },
-  {
     "name": "Boom Tube Comics",
     "rating": null,
     "reviewCount": 0,
@@ -2211,25 +2173,6 @@
       "Hartford",
       "Middletown",
       "New Britain"
-    ]
-  },
-  {
-    "name": "Amato's Toy and Hobby Middletown",
-    "rating": null,
-    "reviewCount": 0,
-    "address": "",
-    "hoursStatus": "",
-    "scrapedAt": "2025-07-24T20:48:33.759Z",
-    "city": "Meriden",
-    "gamesFound": [
-      "warhammer 40k"
-    ],
-    "searchQueries": [
-      "warhammer 40k store Meriden Connecticut"
-    ],
-    "actualCity": "Meriden",
-    "foundInSearches": [
-      "Meriden"
     ]
   },
   {
@@ -2733,25 +2676,21 @@
     "reviewCount": 0,
     "address": "",
     "hoursStatus": "",
-    "scrapedAt": "2025-07-24T20:52:02.103Z",
+    "scrapedAt": "2025-07-24T20:49:33.296Z",
     "city": "Middletown",
     "gamesFound": [
-      "pokemon cards",
-      "magic the gathering",
-      "yugioh cards",
-      "warhammer 40k",
-      "board games"
+      "warhammer 40k"
     ],
     "searchQueries": [
-      "pokemon cards store Middletown Connecticut",
-      "magic the gathering store Middletown Connecticut",
-      "yugioh cards store Middletown Connecticut",
-      "warhammer 40k store Middletown Connecticut",
-      "board games store Middletown Connecticut"
+      "warhammer 40k store Bristol Connecticut"
     ],
     "actualCity": "Middletown",
     "foundInSearches": [
-      "Middletown"
+      "Bristol",
+      "Hartford",
+      "Meriden",
+      "Middletown",
+      "New Britain"
     ]
   },
   {
@@ -3584,25 +3523,6 @@
     ],
     "searchQueries": [
       "magic the gathering store New Britain Connecticut"
-    ],
-    "actualCity": "New Britain",
-    "foundInSearches": [
-      "New Britain"
-    ]
-  },
-  {
-    "name": "Amato's Toy and Hobby Middletown",
-    "rating": null,
-    "reviewCount": 0,
-    "address": "",
-    "hoursStatus": "",
-    "scrapedAt": "2025-07-24T20:47:46.222Z",
-    "city": "New Britain",
-    "gamesFound": [
-      "board games"
-    ],
-    "searchQueries": [
-      "board games store New Britain Connecticut"
     ],
     "actualCity": "New Britain",
     "foundInSearches": [
