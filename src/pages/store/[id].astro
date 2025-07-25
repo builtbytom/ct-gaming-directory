@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import BasicStoreDetail from '../../components/BasicStoreDetail.astro';
 import EnhancedStoreDetail from '../../components/EnhancedStoreDetail.astro';
-import storesData from '../../data/stores.json';
+import storesData from '../../data/stores-fixed.json';
 import { parseStoreName } from '../../utils/parseStoreName.js';
 
 export function getStaticPaths() {
@@ -42,12 +42,12 @@ export function getStaticPaths() {
     city: store.city
   }));
 
-  // Add back the two example stores for demo
+  // Add back the two example stores for demo at the end
   const demoStores = [
     {
-      id: "1",
-      slug: "the-battle-standard",
-      name: "The Battle Standard",
+      id: String(stores.length + 1),
+      slug: "the-battle-standard-demo",
+      name: "The Battle Standard (Demo)",
       address: "123 Main St, Hartford, CT 06103",
       phone: "(860) 555-0123",
       website: "thebattlestandard.com",
@@ -73,9 +73,9 @@ export function getStaticPaths() {
       ]
     },
     {
-      id: "2",
-      slug: "dragons-den-gaming",
-      name: "Dragon's Den Gaming",
+      id: String(stores.length + 2),
+      slug: "dragons-den-gaming-demo",
+      name: "Dragon's Den Gaming (Demo)",
       address: "456 Oak Ave, New Haven, CT 06511",
       phone: "(203) 555-0456",
       website: "dragonsden-ct.com",

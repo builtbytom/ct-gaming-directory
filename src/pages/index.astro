@@ -3,15 +3,16 @@ import Layout from '../layouts/Layout.astro';
 import StoreCard from '../components/StoreCard.astro';
 import SearchBar from '../components/SearchBar.astro';
 import LocationButton from '../components/LocationButton.astro';
-import storesData from '../data/stores.json';
+import storesData from '../data/stores-fixed.json';
 import { parseStoreName } from '../utils/parseStoreName.js';
 
-// Get a sample of stores for the homepage
-const stores = storesData
+// Get a sample of stores for the homepage  
+const storesWithIndex = storesData.map((store, index) => ({ ...store, globalIndex: index + 1 }));
+const stores = storesWithIndex
   .filter(store => store.city === 'Hartford' || store.city === 'New Haven' || store.city === 'Stamford')
   .slice(0, 9)
-  .map((store, index) => ({
-    id: index + 1,
+  .map((store) => ({
+    id: store.globalIndex,
     name: store.name,
     address: `${parseStoreName(store.name, store.city)}, CT`,
     games: store.gamesFound.map(g => {
